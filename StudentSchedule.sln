@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentSchedule.API", "StudentSchedule.API\StudentSchedule.API.csproj", "{D21FBA62-3FF9-441B-8C73-866AC105E502}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentSchedule.Contracts", "StudentSchedule.Contracts\StudentSchedule.Contracts.csproj", "{FDB44CF2-8A22-4092-B747-0A250F61FBFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D21FBA62-3FF9-441B-8C73-866AC105E502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D21FBA62-3FF9-441B-8C73-866AC105E502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D21FBA62-3FF9-441B-8C73-866AC105E502}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D21FBA62-3FF9-441B-8C73-866AC105E502}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB44CF2-8A22-4092-B747-0A250F61FBFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB44CF2-8A22-4092-B747-0A250F61FBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB44CF2-8A22-4092-B747-0A250F61FBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB44CF2-8A22-4092-B747-0A250F61FBFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
