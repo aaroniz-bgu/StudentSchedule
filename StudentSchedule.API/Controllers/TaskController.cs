@@ -23,7 +23,7 @@ public class TaskController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("{id:long}")]
     public async Task<ActionResult> GetTask(long id)
     {
         throw new NotImplementedException();
@@ -41,7 +41,13 @@ public class TaskController : ControllerBase
         throw new NotImplementedException();
     }
     
-    [HttpDelete("{id}")]
+    [HttpPut("progress/{id:long}/{progress:int}")]
+    public async Task<ActionResult> UpdateTaskProgress(long id, int progress)
+    {
+        throw new NotImplementedException();
+    }
+    
+    [HttpDelete("{id:long}")]
     public async Task<ActionResult> DeleteTask(long id)
     {
         throw new NotImplementedException();
