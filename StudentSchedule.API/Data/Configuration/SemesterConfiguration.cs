@@ -11,6 +11,7 @@ public class SemesterConfiguration : IEntityTypeConfiguration<Semester>
         builder
             .HasMany(s => s.Courses)
             .WithOne(c => c.Semester)
+            .OnDelete(DeleteBehavior.Cascade)
             .HasForeignKey(s => s.Id)
             .IsRequired();
 
