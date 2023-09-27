@@ -58,22 +58,4 @@ public class SemesterService : ISemesterService
         _context.Semesters.Remove(semester);
         await _context.SaveChangesAsync();
     }
-
-    public Task<List<Course>> GetCoursesAsync(long semesterId)
-    {
-        //TODO
-        throw new NotImplementedException();
-    }
-
-    public Task RemoveCourse(long semesterId, long courseId)
-    {
-        //TODO
-        throw new NotImplementedException();
-    }
-
-    public Task AddCourse(long semesterId, Course course)
-    {
-        //TODO
-        throw new NotImplementedException();
-    }
 }
