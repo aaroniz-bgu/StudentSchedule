@@ -15,6 +15,7 @@ public sealed class AppDbContext : DbContext
     
     //TODO add all the DbSets
     public DbSet<Semester> Semesters { get; private set; }
+    public DbSet<CourseTask> Tasks { get; private set; }
     public DbSet<Course> Courses { get; private set; }
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
