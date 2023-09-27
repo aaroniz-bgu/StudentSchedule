@@ -2,16 +2,12 @@ namespace StudentSchedule.API.Domain.Models;
 
 public class Course
 {
-    private long _id;
     private List<Exam> _exams;
     private List<Lesson> _lessons;
     private List<CourseTask> _tasks;
     
-    public long Id
-    {
-        get => _id;
-        private set => _id = value;
-    }
+    public long Id { get; private set; }
+
     public IReadOnlyList<Exam> Exams
     {
         get => _exams; 
@@ -28,20 +24,28 @@ public class Course
         private set => _tasks = value.ToList();
     }
     
-    public string Name { get; set; }
+    public string Title { get; set; }
     public Semester Semester { get; private set; }
     
-    public Course(long id, string name, Semester semester)
+    public Course(long id, string title, Semester semester)
     {
         Id = id;
-        Name = name;
+        Title = title;
         Semester = semester;
+        
+        _exams = new List<Exam>();
+        _lessons = new List<Lesson>();
+        _tasks = new List<CourseTask>();
     }
     
-    public Course(string name, Semester semester)
+    public Course(string title, Semester semester)
     {
-        Name = name;
+        Title = title;
         Semester = semester;
+        
+        _exams = new List<Exam>();
+        _lessons = new List<Lesson>();
+        _tasks = new List<CourseTask>();
     }
     
     public void AddExam(Exam exam)
