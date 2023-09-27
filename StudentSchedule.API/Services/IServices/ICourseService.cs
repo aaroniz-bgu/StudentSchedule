@@ -6,7 +6,8 @@ public interface ICourseService
 {
     Task<List<Course>> GetCoursesAsync();
     Task<Course> GetCourseAsync(long id);
-    Task<Course> AddCourseAsync(string title, string description, DateTime startDate, DateTime endDate);
-    Task UpdateCourseAsync(Course course);
+    Task<Course> GetCourseEagerlyAsync(long id);
+    Task<Course> AddCourseAsync(long semesterId, string title);
+    Task UpdateCourseAsync(long id, string title);
     Task DeleteCourseAsync(long id);
 }
