@@ -23,7 +23,7 @@ public class ExceptionController : ControllerBase
         catch (AppException ex)
         {
             return Problem(
-                statusCode: (int)ex.StatusCode,
+                statusCode: ex.StatusCode,
                 detail: ex.Message
             );
         }
