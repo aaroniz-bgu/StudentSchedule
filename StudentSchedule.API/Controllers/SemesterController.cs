@@ -67,5 +67,12 @@ public class SemesterController : ControllerBase
     }
     
     //TODO: Replace with designated mapper
-    public Semester ConvertRequest(SemesterRequest request) => new Semester(request.Id, request.Title, request.StartDate, request.EndDate);
+    private Semester ConvertRequest(SemesterRequest request)
+    {
+        return new Semester(request.Id, request.Title, request.StartDate, request.EndDate);
+    }
+    private SemesterResponse ConvertResponse(Semester semester)
+    {
+        return new SemesterResponse(semester.Id, semester.Title, semester.StartDate, semester.EndDate);
+    }
 }
