@@ -45,8 +45,9 @@ public class TaskService : ITaskService
         var course = await _gatherer.CourseService.GetCourseEagerlyAsync(courseId);
         var task = new CourseTask(title, description, deadline, (TaskType) type, course);
         
-        course.AddTask(task);
-        _context.Courses.Update(course);
+        // course.AddTask(task);
+        // _context.Courses.Update(course); already added in constructor(line 42).
+        
         var addTask = await _context.Tasks.AddAsync(task);
         await _context.SaveChangesAsync();
         
