@@ -38,23 +38,75 @@ public class TaskService : ITaskService
             .FirstOrDefaultAsync(t => t.Id == id) ?? throw new NotFoundException($"Task with {id} id was not found.");
     }
 
-    public Task<CourseTask> AddTaskAsync(long courseId, string title, string description, DateTime deadline, int type)
+    public async Task<CourseTask> AddTaskAsync(long courseId, string title, string description, DateTime deadline, int type)
     {
-        throw new NotImplementedException();
+        IsValidRequest(title, description, deadline, type);
+        
+        var course = await _gatherer.CourseService.GetCourseEagerlyAsync(courseId);
+        var task = new CourseTask(title, description, deadline, (TaskType) type, course);
+        
+        course.AddTask(task);
+        _context.Courses.Update(course);
+        var addTask = await _context.Tasks.AddAsync(task);
+        await _context.SaveChangesAsync();
+        
+        return addTask.Entity; //Returned with auto-generated id.
     }
 
-    public Task UpdateTaskAsync(CourseTask updated)
+    public async Task UpdateTaskAsync(CourseTask updated)
     {
-        throw new NotImplementedException();
+        IsValidRequest(updated);
+
+        var task = await GetTaskEagerlyAsync(updated.Id);
+        
+        task.Title = updated.Title;
+        task.Description = updated.Description;
+        task.DueDate = updated.DueDate;
+        task.Type = updated.Type;
+        
+        _context.Tasks.Update(task);
+        await _context.SaveChangesAsync();
     }
 
-    public Task UpdateTaskProgressAsync(long id, int progress)
+    public async Task UpdateTaskProgressAsync(long id, int progress)
     {
-        throw new NotImplementedException();
+        if (progress < 0)
+        {
+            throw new ArgumentException("Progress cannot be negative.");
+        }
+        
+        var task = await GetTaskEagerlyAsync(id);
+
+        if (progress > task.MaxProgress)
+        {
+            throw new ArgumentException("Progress cannot be greater than max progress.");
+        }
+        
+        task.Progress = progress;
+        _context.Tasks.Update(task);
+        await _context.SaveChangesAsync();
     }
 
-    public Task DeleteTaskAsync(long id)
+    public async Task DeleteTaskAsync(long id)
     {
-        throw new NotImplementedException();
+        var task = await GetTaskAsync(id);
+        _context.Tasks.Remove(task);
+    }
+    
+    private void IsValidRequest(string title, string description, DateTime deadline, int type)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Title cannot be empty or null.");
+        if (string.IsNullOrWhiteSpace(description))
+            throw new ArgumentException("Description cannot be empty or null.");
+        if (deadline < DateTime.Now)
+            throw new ArgumentException("Deadline cannot be in the past.");
+        if (type < 0 || type > 2)
+            throw new ArgumentException("Type must be between 0 and 3.");
+    }
+    
+    private void IsValidRequest(CourseTask task)
+    {
+        IsValidRequest(task.Title, task.Description, task.DueDate, (int) task.Type);
     }
 }
