@@ -12,15 +12,6 @@ public class ServiceGatherer : IServiceGatherer
     public void Join(ICourseService courseService)
     {
         CourseService = courseService;
-    }
-
-    public void Join(ISemesterService semesterService)
-    {
-        SemesterService = semesterService;
-    }
-
-    public void Join(ITaskService taskService)
-    {
         TaskService = taskService;
     }
 }
