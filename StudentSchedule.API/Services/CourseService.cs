@@ -47,9 +47,10 @@ public class CourseService : ICourseService
         var course = new Course(title, semester);
         
         var addTask = await _context.Courses.AddAsync(course);
-        semester.AddCourse(course);
-
-        _context.Semesters.Update(semester);
+        
+        //semester.AddCourse(course); already added in constructor(line 43), when defining the relationship.
+        //_context.Semesters.Update(semester);
+        
         await _context.SaveChangesAsync();
 
         return addTask.Entity;
