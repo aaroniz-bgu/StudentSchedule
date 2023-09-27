@@ -84,7 +84,7 @@ public class SemesterService : ISemesterService
     /// <exception cref="ArgumentException">Thrown when the request parameters are not valid.</exception>
     private void IsValidRequest(string title, DateTime startDate, DateTime endDate) 
     {
-        if (String.IsNullOrEmpty(title)) 
+        if (string.IsNullOrEmpty(title)) 
             throw new ArgumentException("Title cannot be null or empty.");
         if (startDate == null || endDate == null)
             throw new ArgumentException("Neither starting nor ending date are allowed to be null."); 
