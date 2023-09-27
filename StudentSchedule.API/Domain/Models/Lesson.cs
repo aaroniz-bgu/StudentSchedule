@@ -35,4 +35,25 @@ public class Lesson
         Start = start;
         End = end;
     }
+    
+    //EF wants.... "EF GETS!", you damn right! Ef gets.
+    public Lesson(
+        long id,
+        string teacher, string module,
+        string building, string room,
+        bool reoccurring, DateTime start, DateTime end)
+    {
+        Id = id;
+        
+        Teacher = teacher;
+        Module = module;
+        
+        Building = building;
+        Room = room;
+        
+        //checked in the service, no logic here.
+        Reoccurring = reoccurring;
+        Start = start;
+        End = end;
+    }
 }
