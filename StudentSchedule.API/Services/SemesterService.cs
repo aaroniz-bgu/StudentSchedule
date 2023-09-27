@@ -8,11 +8,15 @@ namespace StudentSchedule.API.Services;
 
 public class SemesterService : ISemesterService
 {
+    private readonly IServiceGatherer _gatherer;
     private readonly AppDbContext _context;
     
-    public SemesterService(AppDbContext context)
+    public SemesterService(IServiceGatherer gatherer, AppDbContext context)
     {
+        _gatherer = gatherer;
         _context = context;
+        
+        _gatherer.Join(this);
     }
     
     public async Task<List<Semester>> GetSemestersAsync()
