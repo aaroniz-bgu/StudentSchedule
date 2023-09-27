@@ -10,57 +10,96 @@ namespace StudentSchedule.API.Controllers;
 [Route("[controller]")]
 public class TaskController : ControllerBase
 {
-    private readonly ITaskService _taskService;
+    private readonly ITaskService _service;
     
     public TaskController(ITaskService taskService)
     {
-        _taskService = taskService;
+        _service = taskService;
     }
     
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetTasks()
     {
-        throw new NotImplementedException();
+        var tasks = await _service.GetTasksAsync();
+        var response = tasks.Select(ConvertResponse).ToList();
+        return Ok(response);
     }
     
     [HttpGet("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetTask(long id)
     {
-        throw new NotImplementedException();
+        var task = await _service.GetTaskAsync(id);
+        var response = ConvertResponse(task);
+        return Ok(response);
     }
     
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> AddTask(long courseId, string title, string description, DateTime deadline, int type)
     {
-        throw new NotImplementedException();
+        var task = await _service.AddTaskAsync(courseId, title, description, deadline, type);
+        var response = ConvertResponse(task);
+        return CreatedAtAction(nameof(GetTask), new { id = response.Id }, response);
     }
     
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateTask(TaskRequest request)
     {
-        throw new NotImplementedException();
+        var task = ConvertRequest(request);
+        await _service.UpdateTaskAsync(task);
+        return Ok();
     }
     
     [HttpPut("progress/{id:long}/{progress:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateTaskProgress(long id, int progress)
     {
-        throw new NotImplementedException();
+        await _service.UpdateTaskProgressAsync(id, progress);
+        return Ok();
     }
     
     [HttpDelete("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteTask(long id)
     {
-        throw new NotImplementedException();
+        await _service.DeleteTaskAsync(id);
+        return NoContent();
     }
-    
+
     private CourseTask ConvertRequest(TaskRequest request)
     {
-        throw new NotImplementedException();
+        return new CourseTask(
+            request.Id,
+            request.Title,
+            request.Description,
+            request.DueDate,
+            (TaskType) request.Type
+            );
     }
     
     private TaskResponse ConvertResponse(CourseTask task)
     {
-        throw new NotImplementedException();
+        return new TaskResponse(
+            task.Course.Id,
+            task.Id,
+            (int)task.Type,
+            task.Title,
+            task.Description,
+            task.DueDate,
+            task.Progress,
+            task.IsCompleted
+            );
     }
     
 }
