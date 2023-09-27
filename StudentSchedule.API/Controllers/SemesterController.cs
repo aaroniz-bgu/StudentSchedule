@@ -28,7 +28,7 @@ public class SemesterController : ControllerBase
         return Ok(response);
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("{id:long}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetSemester(int id)
@@ -45,7 +45,7 @@ public class SemesterController : ControllerBase
     {
         if(request.Id != CreationalRequestId)
         {
-            BadRequest("Id should be -1 for a create request.");
+            BadRequest("Id must be -1 for a create request.");
         }
         
         var semester = await _semesterService.AddSemesterAsync(request.Title, request.StartDate, request.EndDate);
@@ -63,7 +63,7 @@ public class SemesterController : ControllerBase
         return Ok();
     }
     
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:long}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteSemester(long id)
