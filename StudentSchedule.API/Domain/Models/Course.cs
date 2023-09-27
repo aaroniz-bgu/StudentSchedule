@@ -48,6 +48,17 @@ public class Course
         _tasks = new List<CourseTask>();
     }
     
+    //EF wants, EF gets.
+    public Course(long id, string title)
+    {
+        Id = id;
+        Title = title;
+        
+        _exams = new List<Exam>();
+        _lessons = new List<Lesson>();
+        _tasks = new List<CourseTask>();
+    }
+    
     public void AddExam(Exam exam)
     {
         _exams.Add(exam);
