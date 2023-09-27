@@ -6,8 +6,8 @@ public class ServiceGatherer : IServiceGatherer
 {
     public ICourseService CourseService { get; private set; }
     public ISemesterService SemesterService { get; private set; }
+    public ITaskService TaskService { get; private set; }
     
-    //
     
     public void Join(ICourseService courseService)
     {
@@ -17,5 +17,10 @@ public class ServiceGatherer : IServiceGatherer
     public void Join(ISemesterService semesterService)
     {
         SemesterService = semesterService;
+    }
+
+    public void Join(ITaskService taskService)
+    {
+        TaskService = taskService;
     }
 }
