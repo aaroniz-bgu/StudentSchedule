@@ -10,3 +10,4 @@ Let's dive deeper to this design choice. With EF Core we have the amazing `DbCon
 This post summarizes some design choices regarding the services that are realized in this repository.
 
 [comment]: <> (TODO Grammar check, word choices etc.)
+[comment]: <> (TODO Talk about Gatherer)
