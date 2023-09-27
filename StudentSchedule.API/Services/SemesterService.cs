@@ -32,6 +32,15 @@ public class SemesterService : ISemesterService
         
         return semester ?? throw new NotFoundException($"Semester with id {id} was not found.");
     }
+    
+    public async Task<Semester> GetSemesterEagerlyAsync(long id)
+    {
+        var semester = await _context.Semesters
+            .Include(s => s.Courses)
+            .FirstOrDefaultAsync(s => s.Id == id);
+        
+        return semester ?? throw new NotFoundException($"Semester with id {id} was not found.");
+    }
 
     public async Task<Semester> AddSemesterAsync(string title, DateTime startDate, DateTime endDate)
     {
@@ -45,8 +54,16 @@ public class SemesterService : ISemesterService
         return addTask.Entity;
     }
 
-    public async Task UpdateSemesterAsync(Semester semester)
+    public async Task UpdateSemesterAsync(Semester updated)
     {
+        IsValidRequest(updated);
+        
+        var semester = await GetSemesterEagerlyAsync(updated.Id);
+        
+        semester.Title = updated.Title;
+        semester.StartDate = updated.StartDate;
+        semester.EndDate = updated.EndDate;
+        
         _context.Semesters.Update(semester);
         await _context.SaveChangesAsync();
     }
