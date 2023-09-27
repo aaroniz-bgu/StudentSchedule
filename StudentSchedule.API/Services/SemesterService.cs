@@ -35,12 +35,7 @@ public class SemesterService : ISemesterService
 
     public async Task<Semester> AddSemesterAsync(string title, DateTime startDate, DateTime endDate)
     {
-        if (String.IsNullOrEmpty(title)) 
-            throw new ArgumentException("Title cannot be null or empty.");
-        if (startDate == null || endDate == null)
-            throw new ArgumentException("Neither starting nor ending date are allowed to be null."); 
-        if (startDate > endDate) 
-            throw new ArgumentException("Starting date cannot be after ending date.");
+        IsValidRequest(title, startDate, endDate);
         
         var semester = new Semester(title, startDate, endDate);
         
@@ -61,5 +56,28 @@ public class SemesterService : ISemesterService
         var semester = await GetSemesterAsync(id);
         _context.Semesters.Remove(semester);
         await _context.SaveChangesAsync();
+    } 
+    
+    /// <summary>
+    /// Checks if the request is valid.
+    /// </summary>
+    /// <param name="title">The title of the request. Cannot be null/empty.</param>
+    /// <param name="startDate">The starting date of the request. Cannot be later than <paramref name="endDate"/>/null.</param>
+    /// <param name="endDate">The ending date of the request. Cannot be sooner than <paramref name="startDate"/>/null.</param>
+    /// <exception cref="ArgumentException">Thrown when the request parameters are not valid.</exception>
+    private void IsValidRequest(string title, DateTime startDate, DateTime endDate) 
+    {
+        if (String.IsNullOrEmpty(title)) 
+            throw new ArgumentException("Title cannot be null or empty.");
+        if (startDate == null || endDate == null)
+            throw new ArgumentException("Neither starting nor ending date are allowed to be null."); 
+        if (startDate > endDate) 
+            throw new ArgumentException("Starting date cannot be after ending date.");
     }
+    
+    /// <summary>
+    /// Checks if the request represented by a Semester object is valid.
+    /// </summary>
+    /// <param name="s">The Semester object representing the request.</param>
+    private void IsValidRequest(Semester s) => IsValidRequest(s.Title, s.StartDate, s.EndDate);
 }
