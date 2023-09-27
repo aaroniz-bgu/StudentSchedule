@@ -13,9 +13,9 @@ public class CourseController : ControllerBase
 {
     private readonly ICourseService _service;
     
-    public CourseController(ICourseService service)
+    public CourseController(IServiceGatherer gatherer)
     {
-        _service = service;
+        _service = gatherer.CourseService;
     }
     
     [HttpGet]
@@ -69,6 +69,10 @@ public class CourseController : ControllerBase
 
     private CourseResponse ConvertResponse(Course course)
     {
+        /* TODO:
+         * Since `course.Semester.Id` required, Semester must be loaded eagerly at service,
+         * within any function that returns to the client.
+         */
         return new CourseResponse(course.Semester.Id, course.Id, course.Title);
     }
 }

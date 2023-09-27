@@ -14,9 +14,9 @@ public class SemesterController : ControllerBase
     
     private readonly ISemesterService _semesterService;
     
-    public SemesterController(ISemesterService semesterService)
+    public SemesterController(IServiceGatherer gatherer)
     {
-        _semesterService = semesterService;
+        _semesterService = gatherer.SemesterService;
     }
     
     [HttpGet]
@@ -45,7 +45,7 @@ public class SemesterController : ControllerBase
     {
         if(request.Id != CreationalRequestId)
         {
-            BadRequest("Id must be -1 for a create request.");
+            return BadRequest("Id must be -1 for a create request.");
         }
         
         var semester = await _semesterService.AddSemesterAsync(request.Title, request.StartDate, request.EndDate);
