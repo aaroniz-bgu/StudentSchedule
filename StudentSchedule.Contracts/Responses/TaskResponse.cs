@@ -7,4 +7,4 @@ public record TaskResponse(
     string Title,
     string Description,
     DateTime DueDate,
-    int Progress);
+    int Progress, bool IsDone);
