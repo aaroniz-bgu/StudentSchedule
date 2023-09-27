@@ -2,14 +2,10 @@ namespace StudentSchedule.API.Domain.Models;
 
 public class Semester
 {
-    private long _id;
     private List<Course> _courses; //One to many
     
-    public long Id
-    {
-        get => _id;
-        private set => _id = value;
-    }
+    public long Id { get; private set; }
+
     public IReadOnlyList<Course> Courses
     {
         get => _courses;
@@ -18,11 +14,12 @@ public class Semester
     public string Title { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    
+
     /// <summary>
-    /// Default constructor for semester.
+    /// 
     /// </summary>
-    /// <param name="id">The courses ID.</param>
+    /// <param name="id">The semester's ID.</param>
+    /// <param name="title">Semester's title</param>
     /// <param name="startDate">Starting date of the semester.</param>
     /// <param name="endDate">End date of the semester.</param>
     public Semester(long id, string title, DateTime startDate, DateTime endDate)
@@ -36,6 +33,12 @@ public class Semester
         _courses = new List<Course>();
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="title">Semester's title.</param>
+    /// <param name="startDate">Starting date of the semester.</param>
+    /// <param name="endDate">Ending date of the semester.</param>
     public Semester(string title, DateTime startDate, DateTime endDate)
     {
         Title = title;
