@@ -5,7 +5,9 @@ using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Controllers;
 
-public class CourseController
+[ApiController]
+[Route("[controller]")]
+public class CourseController : ControllerBase
 {
     private readonly ICourseService _service;
     
