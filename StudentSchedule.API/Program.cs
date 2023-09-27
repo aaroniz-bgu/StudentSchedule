@@ -14,10 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("StudentSchedule");
 });
 
-builder.Services.AddScoped<IServiceGatherer, ServiceGatherer>();
 builder.Services.AddScoped<ISemesterService, SemesterService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+
+builder.Services.AddScoped<IServiceGatherer, ServiceGatherer>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
