@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudentSchedule.API.Domain.Models;
 using StudentSchedule.API.Services.IServices;
 using StudentSchedule.Contracts.Requests;
+using StudentSchedule.Contracts.Responses;
 
 namespace StudentSchedule.API.Controllers;
 
@@ -23,7 +24,8 @@ public class SemesterController : ControllerBase
     public async Task<ActionResult> GetSemesters()
     {
         var semesters = await _semesterService.GetSemestersAsync();
-        return Ok(semesters);
+        var response = semesters.Select(ConvertResponse).ToList();
+        return Ok(response);
     }
     
     [HttpGet("{id}")]
@@ -32,7 +34,8 @@ public class SemesterController : ControllerBase
     public async Task<ActionResult> GetSemester(int id)
     {
         var semester = await _semesterService.GetSemesterAsync(id);
-        return Ok(semester);
+        var response = ConvertResponse(semester);
+        return Ok(response);
     }
     
     [HttpPost]
@@ -40,11 +43,14 @@ public class SemesterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> AddSemester(SemesterRequest request)
     {
-        if(request.Id != CreationalRequestId) BadRequest("Id should be -1 for a create request.");
+        if(request.Id != CreationalRequestId)
+        {
+            BadRequest("Id should be -1 for a create request.");
+        }
         
         var semester = await _semesterService.AddSemesterAsync(request.Title, request.StartDate, request.EndDate);
-        
-        return CreatedAtAction(nameof(GetSemester), new { id = semester.Id }, semester);
+        var response = ConvertResponse(semester);
+        return CreatedAtAction(nameof(GetSemester), new { id = semester.Id }, response);
     }
     
     [HttpPut]
