@@ -19,6 +19,7 @@ public class SemesterController : ControllerBase
     }
     
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetSemesters()
     {
         var semesters = await _semesterService.GetSemestersAsync();
@@ -26,6 +27,8 @@ public class SemesterController : ControllerBase
     }
     
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetSemester(int id)
     {
         var semester = await _semesterService.GetSemesterAsync(id);
@@ -33,17 +36,20 @@ public class SemesterController : ControllerBase
     }
     
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> AddSemester(SemesterRequest request)
     {
         if(request.Id != CreationalRequestId) BadRequest("Id should be -1 for a create request.");
         
-        var newSemester = await _semesterService.AddSemesterAsync(request.Title, request.StartDate, request.EndDate);
+        var semester = await _semesterService.AddSemesterAsync(request.Title, request.StartDate, request.EndDate);
         
-        return Ok(newSemester);
+        return CreatedAtAction(nameof(GetSemester), new { id = semester.Id }, semester);
     }
     
     [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> UpdateSemester(SemesterRequest request)
     {
         var semester = ConvertRequest(request);
@@ -52,10 +58,12 @@ public class SemesterController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteSemester(long id)
     {
         await _semesterService.DeleteSemesterAsync(id);
-        return Ok();
+        return NoContent();
     }
     
     //TODO: Replace with designated mapper
