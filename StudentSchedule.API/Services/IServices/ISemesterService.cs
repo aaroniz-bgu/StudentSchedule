@@ -2,7 +2,7 @@ using StudentSchedule.API.Domain.Models;
 
 namespace StudentSchedule.API.Services.IServices;
 
-public interface ISemesterService
+public interface ISemesterService : IAppService
 {
     Task<List<Semester>> GetSemestersAsync();
     Task<Semester> GetSemesterAsync(long id);
