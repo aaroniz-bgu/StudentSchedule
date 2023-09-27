@@ -98,3 +98,8 @@ public class SemesterService : ISemesterService
     /// <param name="s">The Semester object representing the request.</param>
     private void IsValidRequest(Semester s) => IsValidRequest(s.Title, s.StartDate, s.EndDate);
 }
+
+/*
+ * Would automatically traverse the relationship tree"
+ * `Select(x => { Prop1 = x.Child.DeepChild.DeeperChild.DeeperChildProp });`
+ */
