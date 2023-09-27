@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using StudentSchedule.API.Data;
 using StudentSchedule.API.Domain.Models;
+using StudentSchedule.API.Exception;
 using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
@@ -17,28 +19,57 @@ public class CourseService : ICourseService
         _gatherer.Join(this);
     }
     
-    public Task<List<Course>> GetCoursesAsync()
+    public async Task<List<Course>> GetCoursesAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Courses.AsNoTracking().ToListAsync();
     }
 
-    public Task<Course> GetCourseAsync(long id)
+    public async Task<Course> GetCourseAsync(long id)
     {
-        throw new NotImplementedException();
+        return await _context.Courses.FindAsync(id) ?? throw new NotFoundException($"Course with {id} id was not found.");
+    }
+    
+    public async Task<Course> GetCourseEagerlyAsync(long id)
+    {
+        return await _context.Courses
+            .Include(e => e.Semester)
+            .Include(e => e.Lessons)
+            .Include(e => e.Tasks)
+            .Include(e => e.Exams)
+            .FirstOrDefaultAsync(e => e.Id == id) ?? throw new NotFoundException($"Course with {id} id was not found.");
     }
 
-    public Task<Course> AddCourseAsync(string title, string description, DateTime startDate, DateTime endDate)
+    public async Task<Course> AddCourseAsync(long semesterId, string title)
     {
-        throw new NotImplementedException();
+        if(string.IsNullOrEmpty(title)) throw new ArgumentException("Title cannot be null or empty.");
+        
+        var semester = await _gatherer.SemesterService.GetSemesterEagerlyAsync(semesterId);
+        var course = new Course(title, semester);
+        
+        var addTask = await _context.Courses.AddAsync(course);
+        semester.AddCourse(course);
+
+        _context.Semesters.Update(semester);
+        await _context.SaveChangesAsync();
+
+        return addTask.Entity;
     }
 
-    public Task UpdateCourseAsync(Course course)
+    public async Task UpdateCourseAsync(long id, string title)
     {
-        throw new NotImplementedException();
+        if(string.IsNullOrEmpty(title)) throw new ArgumentException("Title cannot be null or empty.");
+        
+        var course = await GetCourseAsync(id);
+        course.Title = title;
+        
+        _context.Courses.Update(course);
+        await _context.SaveChangesAsync();
     }
 
-    public Task DeleteCourseAsync(long id)
+    public async Task DeleteCourseAsync(long id)
     {
-        throw new NotImplementedException();
+        var course = await GetCourseAsync(id);
+        _context.Courses.Remove(course);
+        await _context.SaveChangesAsync();
     }
 }
