@@ -6,22 +6,18 @@ using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
 
-public class CourseService : ICourseService
+public class CourseService : AppService, ICourseService
 {
-    private readonly IServiceGatherer _gatherer;
     private readonly AppDbContext _context;
     
-    public CourseService(IServiceGatherer gatherer, AppDbContext context)
+    public CourseService(AppDbContext context)
     {
-        _gatherer = gatherer;
         _context = context;
-        
-        _gatherer.Join(this);
     }
     
     public async Task<List<Course>> GetCoursesAsync()
     {
-        return await _context.Courses.AsNoTracking().ToListAsync();
+        return await _context.Courses.Include(e => e.Semester).AsNoTracking().ToListAsync();
     }
 
     public async Task<Course> GetCourseAsync(long id)

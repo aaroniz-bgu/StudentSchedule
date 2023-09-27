@@ -6,19 +6,15 @@ using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
 
-public class SemesterService : ISemesterService
+public class SemesterService : AppService, ISemesterService
 {
-    private readonly IServiceGatherer _gatherer;
     private readonly AppDbContext _context;
     
-    public SemesterService(IServiceGatherer gatherer, AppDbContext context)
+    public SemesterService(AppDbContext context)
     {
-        _gatherer = gatherer;
         _context = context;
-        
-        _gatherer.Join(this);
     }
-    
+
     public async Task<List<Semester>> GetSemestersAsync()
     {
         var list = await _context.Semesters.AsNoTracking().ToListAsync();

@@ -6,17 +6,13 @@ using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
 
-public class TaskService : ITaskService
+public class TaskService : AppService, ITaskService
 {
-    private readonly IServiceGatherer _gatherer;
     private readonly AppDbContext _context;
     
-    public TaskService(IServiceGatherer gatherer, AppDbContext context)
+    public TaskService(AppDbContext context)
     {
-        _gatherer = gatherer;
         _context = context;
-        
-        _gatherer.Join(this);
     }
     
     public async Task<List<CourseTask>> GetTasksAsync()
@@ -110,4 +106,5 @@ public class TaskService : ITaskService
     {
         IsValidRequest(task.Title, task.Description, task.DueDate, (int) task.Type);
     }
+
 }
