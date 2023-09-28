@@ -5,7 +5,7 @@ using StudentSchedule.API.Exception;
 using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
-
+//TODO-> This class has only one call to the gatherer look into eliminating it.
 public class TaskService : AppService, ITaskService
 {
     private readonly AppDbContext _context;
@@ -38,13 +38,13 @@ public class TaskService : AppService, ITaskService
     {
         IsValidRequest(title, description, deadline, type);
         
+        //Consider not using this, but rather access the course straight from the context:
         var course = await _gatherer.CourseService.GetCourseEagerlyAsync(courseId);
+        
         var task = new CourseTask(title, description, deadline, (TaskType) type, course);
         
-        // course.AddTask(task);
-        // _context.Courses.Update(course); already added in constructor(line 42).
-        
         var addTask = await _context.Tasks.AddAsync(task);
+        
         await _context.SaveChangesAsync();
         
         return addTask.Entity; //Returned with auto-generated id.

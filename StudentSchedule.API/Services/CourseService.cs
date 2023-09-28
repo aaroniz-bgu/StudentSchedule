@@ -5,7 +5,7 @@ using StudentSchedule.API.Exception;
 using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
-
+//TODO-> This service uses the gatherer once, consider not using it but rather access data straight from the context.
 public class CourseService : AppService, ICourseService
 {
     private readonly AppDbContext _context;
@@ -39,13 +39,12 @@ public class CourseService : AppService, ICourseService
     {
         if(string.IsNullOrEmpty(title)) throw new ArgumentException("Title cannot be null or empty.");
         
+        //Maybe consider replacing this with a straight call to the context.
         var semester = await _gatherer.SemesterService.GetSemesterEagerlyAsync(semesterId);
+        
         var course = new Course(title, semester);
         
         var addTask = await _context.Courses.AddAsync(course);
-        
-        //semester.AddCourse(course); already added in constructor(line 43), when defining the relationship.
-        //_context.Semesters.Update(semester);
         
         await _context.SaveChangesAsync();
 

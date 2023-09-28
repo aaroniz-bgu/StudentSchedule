@@ -5,7 +5,7 @@ using StudentSchedule.API.Exception;
 using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
-
+//TODO-> This service doesn't need the gatherer but the gatherer needs it. Look into it.
 public class SemesterService : AppService, ISemesterService
 {
     private readonly AppDbContext _context;
