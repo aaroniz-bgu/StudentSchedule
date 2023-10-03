@@ -39,12 +39,14 @@ public class TaskService : ITaskService
         IsValidRequest(title, description, deadline, type);
         
         //Consider not using this, but rather access the course straight from the context:
-        var course = await _gatherer.CourseService.GetCourseEagerlyAsync(courseId);
+        var course = await _context.Courses
+                         .Include(e => e.Tasks)
+                         .FirstOrDefaultAsync(e => e.Id == courseId) 
+                     ?? throw new NotFoundException("Course with {courseId} id was not found.");
         
         var task = new CourseTask(title, description, deadline, (TaskType) type, course);
         
         var addTask = await _context.Tasks.AddAsync(task);
-        
         await _context.SaveChangesAsync();
         
         return addTask.Entity; //Returned with auto-generated id.
