@@ -6,7 +6,7 @@ using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
 //TODO-> This service uses the gatherer once, consider not using it but rather access data straight from the context.
-public class CourseService : AppService, ICourseService
+public class CourseService : ICourseService
 {
     private readonly AppDbContext _context;
     

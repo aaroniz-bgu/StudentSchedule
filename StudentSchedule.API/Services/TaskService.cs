@@ -6,7 +6,7 @@ using StudentSchedule.API.Services.IServices;
 
 namespace StudentSchedule.API.Services;
 //TODO-> This class has only one call to the gatherer look into eliminating it.
-public class TaskService : AppService, ITaskService
+public class TaskService : ITaskService
 {
     private readonly AppDbContext _context;
     
