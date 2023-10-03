@@ -39,13 +39,15 @@ public class CourseService : ICourseService
     {
         if(string.IsNullOrEmpty(title)) throw new ArgumentException("Title cannot be null or empty.");
         
-        //Maybe consider replacing this with a straight call to the context.
-        var semester = await _gatherer.SemesterService.GetSemesterEagerlyAsync(semesterId);
+        var semester = await _context.Semesters
+                           .Include(e => e.Courses)
+                           .FirstOrDefaultAsync(e => e.Id == semesterId) 
+                       ?? throw new NotFoundException($"Semester with {semesterId} id was not found.");
         
+        //Note to self, this adds the course to the semester as well automatically.
         var course = new Course(title, semester);
         
         var addTask = await _context.Courses.AddAsync(course);
-        
         await _context.SaveChangesAsync();
 
         return addTask.Entity;
