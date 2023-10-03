@@ -12,18 +12,18 @@ public class SemesterController : ControllerBase
 {
     private const long CreationalRequestId = -1;
     
-    private readonly ISemesterService _semesterService;
+    private readonly ISemesterService _service;
     
-    public SemesterController(IServiceGatherer gatherer)
+    public SemesterController(ISemesterService service)
     {
-        _semesterService = gatherer.SemesterService;
+        _service = service;
     }
     
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> GetSemesters()
     {
-        var semesters = await _semesterService.GetSemestersAsync();
+        var semesters = await _service.GetSemestersAsync();
         var response = semesters.Select(ConvertResponse).ToList();
         return Ok(response);
     }
@@ -33,7 +33,7 @@ public class SemesterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> GetSemester(int id)
     {
-        var semester = await _semesterService.GetSemesterAsync(id);
+        var semester = await _service.GetSemesterAsync(id);
         var response = ConvertResponse(semester);
         return Ok(response);
     }
@@ -48,7 +48,7 @@ public class SemesterController : ControllerBase
             return BadRequest("Id must be -1 for a create request.");
         }
         
-        var semester = await _semesterService.AddSemesterAsync(request.Title, request.StartDate, request.EndDate);
+        var semester = await _service.AddSemesterAsync(request.Title, request.StartDate, request.EndDate);
         var response = ConvertResponse(semester);
         return CreatedAtAction(nameof(GetSemester), new { id = semester.Id }, response);
     }
@@ -59,7 +59,7 @@ public class SemesterController : ControllerBase
     public async Task<ActionResult> UpdateSemester(SemesterRequest request)
     {
         var semester = ConvertRequest(request);
-        await _semesterService.UpdateSemesterAsync(semester);
+        await _service.UpdateSemesterAsync(semester);
         return Ok();
     }
     
@@ -68,7 +68,7 @@ public class SemesterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DeleteSemester(long id)
     {
-        await _semesterService.DeleteSemesterAsync(id);
+        await _service.DeleteSemesterAsync(id);
         return NoContent();
     }
     

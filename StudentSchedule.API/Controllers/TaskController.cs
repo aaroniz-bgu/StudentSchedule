@@ -12,9 +12,9 @@ public class TaskController : ControllerBase
 {
     private readonly ITaskService _service;
     
-    public TaskController(IServiceGatherer gatherer)
+    public TaskController(ITaskService service)
     {
-        _service = gatherer.TaskService;
+        _service = service;
     }
     
     [HttpGet]

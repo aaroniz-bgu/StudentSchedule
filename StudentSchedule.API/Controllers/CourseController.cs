@@ -13,9 +13,9 @@ public class CourseController : ControllerBase
 {
     private readonly ICourseService _service;
     
-    public CourseController(IServiceGatherer gatherer)
+    public CourseController(ICourseService service)
     {
-        _service = gatherer.CourseService;
+        _service = service;
     }
     
     [HttpGet]
